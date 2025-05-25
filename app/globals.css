@@ -1,0 +1,201 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+    --radius: 1.5rem;
+
+    /* SBHS Colors */
+    --sbhs-blue: 217 71% 53%;
+    --sbhs-gold: 43 89% 38%;
+
+    /* Theme color (will be set by JS) */
+    --theme-color-light: from-blue-600 to-blue-800;
+    --theme-color-dark: from-blue-500 to-blue-700;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+  }
+
+  body {
+    @apply font-sans text-base antialiased;
+    letter-spacing: -0.01em;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    letter-spacing: -0.02em;
+  }
+
+  /* Add smooth transition for dark mode */
+  * {
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 300ms;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Smooth animations */
+@layer utilities {
+  .transition-all-smooth {
+    @apply transition-all duration-300 ease-in-out;
+  }
+
+  .hover-scale {
+    @apply transition-transform duration-200 ease-out hover:scale-[1.02];
+  }
+
+  .fade-in {
+    @apply animate-[fadeIn_0.3s_ease-in-out];
+  }
+
+  .slide-up {
+    @apply animate-[slideUp_0.3s_ease-in-out];
+  }
+
+  .pulse-subtle {
+    @apply animate-[pulse_2s_ease-in-out_infinite];
+  }
+
+  .backdrop-blur-card {
+    @apply backdrop-blur-md bg-opacity-90 dark:bg-opacity-90;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@layer components {
+  .one-ui-card {
+    @apply rounded-[1.5rem] bg-white dark:bg-gray-900 shadow-md p-5 border border-gray-100 dark:border-gray-800 transition-all duration-300 ease-in-out backdrop-blur-card;
+  }
+
+  .one-ui-header {
+    @apply text-xl font-semibold mb-4;
+  }
+
+  .one-ui-section {
+    @apply mb-6;
+  }
+
+  .one-ui-button {
+    @apply rounded-full px-5 py-3 bg-blue-500 text-white font-medium shadow-sm transition-all duration-200 ease-in-out hover:bg-blue-600 active:scale-95;
+  }
+
+  .one-ui-input {
+    @apply rounded-full border border-gray-200 dark:border-gray-700 px-5 py-3 transition-all duration-200 ease-in-out focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+  }
+
+  .one-ui-icon-container {
+    @apply flex items-center justify-center rounded-full p-3 bg-gray-100 dark:bg-gray-800 transition-all duration-200 ease-in-out;
+  }
+
+  .one-ui-pill {
+    @apply rounded-full px-4 py-1.5 text-sm font-medium transition-all duration-200 ease-in-out;
+  }
+
+  .one-ui-tab {
+    @apply rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 ease-in-out;
+  }
+
+  .one-ui-badge {
+    @apply rounded-full px-2.5 py-1 text-xs font-medium transition-all duration-200 ease-in-out;
+  }
+
+  .one-ui-title-large {
+    @apply text-2xl font-bold tracking-tight;
+  }
+
+  .one-ui-title {
+    @apply text-xl font-semibold tracking-tight;
+  }
+
+  .one-ui-subtitle {
+    @apply text-lg font-medium;
+  }
+
+  .one-ui-body {
+    @apply text-base;
+  }
+
+  .one-ui-caption {
+    @apply text-sm text-gray-500 dark:text-gray-400;
+  }
+
+  .one-ui-micro {
+    @apply text-xs text-gray-500 dark:text-gray-400;
+  }
+
+  .theme-gradient {
+    @apply bg-gradient-to-r var(--theme-color-light) dark:var(--theme-color-dark) bg-clip-text text-transparent;
+  }
+}
