@@ -45,7 +45,7 @@ export default function BellTimesPage() {
               <TabsTrigger
                 key={type}
                 value={type}
-                className="text-sm rounded-full data-[state=active]:bg-white dark:data-[state=active]:bg-gray-900 data-[state=active]:shadow-sm"
+                className="text-sm rounded-full data-[state=active]:bg-theme-primary data-[state=active]:text-white dark:data-[state=active]:bg-theme-primary data-[state=active]:shadow-sm transition-all duration-200"
               >
                 {type}
               </TabsTrigger>
@@ -69,14 +69,14 @@ export default function BellTimesPage() {
                   {bellTimes[type].map((bell, index) => (
                     <div
                       key={index}
-                      className={`bg-blue-50 dark:bg-blue-900/20 rounded-xl p-3 ${
+                      className={`rounded-xl p-3 transition-all duration-200 ease-in-out ${
                         bell.period === "Recess" ||
                         bell.period === "Lunch" ||
                         bell.period === "Lunch 1" ||
                         bell.period === "Lunch 2" ||
                         bell.period === "End of Day"
                           ? "bg-gray-50 dark:bg-gray-800/50"
-                          : ""
+                          : "bg-theme-secondary"
                       }`}
                     >
                       <div className="flex justify-between items-center">

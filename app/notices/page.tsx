@@ -110,9 +110,13 @@ export default function NoticesPage() {
 
         <Tabs defaultValue="All" className="mb-6">
           <div className="overflow-x-auto pb-2">
-            <TabsList className="inline-flex min-w-full mb-4">
+            <TabsList className="inline-flex min-w-full mb-4 bg-gray-100 dark:bg-gray-800 p-1 rounded-full">
               {categories.map((category) => (
-                <TabsTrigger key={category} value={category} className="text-xs whitespace-nowrap">
+                <TabsTrigger
+                  key={category}
+                  value={category}
+                  className="text-xs whitespace-nowrap rounded-full data-[state=active]:bg-theme-primary data-[state=active]:text-white dark:data-[state=active]:bg-theme-primary data-[state=active]:shadow-sm transition-all duration-200"
+                >
                   {category}
                 </TabsTrigger>
               ))}

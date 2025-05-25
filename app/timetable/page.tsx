@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { Card } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { ChevronLeft, ChevronRight, ArrowLeftRight, Clock } from "lucide-react"
+import { ChevronLeft, ChevronRight, ArrowLeftRight, Clock, Calendar } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { getCurrentDay, formatDate, getCurrentTime } from "@/utils/time-utils"
@@ -157,42 +157,62 @@ export default function TimetablePage() {
         </div>
 
         <Tabs value={selectedDay} onValueChange={setSelectedDay} className="mb-6">
-          <TabsList className="grid grid-cols-5 mb-4">
+          <TabsList className="grid grid-cols-5 mb-4 bg-gray-100 dark:bg-gray-800 p-1 rounded-full">
             {days.map((day) => (
-              <TabsTrigger key={day} value={day} className="text-xs transition-all duration-200 ease-in-out">
+              <TabsTrigger
+                key={day}
+                value={day}
+                className="text-xs rounded-full data-[state=active]:bg-theme-primary data-[state=active]:text-white dark:data-[state=active]:bg-theme-primary data-[state=active]:shadow-sm transition-all duration-200"
+              >
                 {day.substring(0, 3)}
               </TabsTrigger>
             ))}
           </TabsList>
           {days.map((day) => (
             <TabsContent key={day} value={day} className="transition-all duration-300 ease-in-out">
-              <Card className="rounded-[1.5rem] bg-white dark:bg-gray-900 shadow-md p-5 border border-gray-100 dark:border-gray-800 transition-all duration-300 ease-in-out">
+              <Card className="rounded-[1.5rem] bg-white dark:bg-gray-900 shadow-md border border-gray-100 dark:border-gray-800 p-5">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="rounded-full p-2 bg-theme-secondary text-theme-primary">
+                    <Calendar className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h2 className="text-lg font-semibold">{day} Schedule</h2>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">{formatDate()}</p>
+                  </div>
+                </div>
+
                 {timetableData[day].length > 0 ? (
-                  timetableData[day].map((period) => (
-                    <div
-                      key={period.id}
-                      className={`py-3 border-b last:border-0 border-gray-100 dark:border-gray-800 transition-all duration-200 ease-in-out hover:bg-gray-50 dark:hover:bg-gray-800/50 ${
-                        period.subject === "Break" ? "bg-gray-50 dark:bg-gray-900/50" : ""
-                      }`}
-                    >
-                      <div className="flex items-start">
-                        <div className="w-16 mr-3">
-                          <p className="font-semibold">{period.period}</p>
-                          <p className="text-xs text-gray-500 dark:text-gray-400">{period.time}</p>
-                        </div>
-                        <div className="flex-1">
-                          <p className="font-semibold">{period.subject}</p>
-                          {period.subject !== "Break" && (
-                            <p className="text-xs text-gray-500 dark:text-gray-400">
-                              {period.teacher} • {period.room}
-                            </p>
-                          )}
+                  <div className="space-y-2">
+                    {timetableData[day].map((period) => (
+                      <div
+                        key={period.id}
+                        className={`rounded-xl p-3 transition-all duration-200 ease-in-out hover:bg-gray-50 dark:hover:bg-gray-800/50 ${
+                          period.subject === "Break" ? "bg-gray-50 dark:bg-gray-800/50" : "bg-theme-secondary"
+                        }`}
+                      >
+                        <div className="flex justify-between items-center">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-3">
+                              <div className="w-12">
+                                <p className="font-semibold text-sm">{period.period}</p>
+                              </div>
+                              <div className="flex-1">
+                                <p className="font-semibold text-sm">{period.subject}</p>
+                                {period.subject !== "Break" && (
+                                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                                    {period.teacher} • {period.room}
+                                  </p>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                          <p className="text-xs text-gray-500 dark:text-gray-400 ml-2">{period.time}</p>
                         </div>
                       </div>
-                    </div>
-                  ))
+                    ))}
+                  </div>
                 ) : (
-                  <div className="py-8 text-center text-gray-500 dark:text-gray-400">
+                  <div className="py-8 text-center text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800/50 rounded-xl">
                     No classes scheduled for this day
                   </div>
                 )}

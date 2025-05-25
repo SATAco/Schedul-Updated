@@ -21,7 +21,7 @@ export default function Home() {
   const { nextPeriodInfo } = useTimetable()
   const { isAuthenticated } = useAuth()
 
-  // Mock student data
+  // Mock student data - only used when authenticated
   const studentName = "John"
 
   // Get current day
@@ -62,12 +62,24 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Personal Greeting */}
+        {/* Personal Greeting - Different based on auth status */}
         <div className="mb-6 slide-up">
-          <h2 className="text-3xl font-bold theme-gradient">Hi, {studentName}!</h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-            {formatDate()} • {currentDay}
-          </p>
+          {isAuthenticated ? (
+            <>
+              <h2 className="text-3xl font-bold theme-gradient">Hi, {studentName}!</h2>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                {formatDate()} • {currentDay}
+              </p>
+            </>
+          ) : (
+            <>
+              <h2 className="text-3xl font-bold theme-gradient">Hello Student!</h2>
+              <p className="text-lg text-gray-600 dark:text-gray-300 mt-2">Please Sign In!</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                {formatDate()} • {currentDay}
+              </p>
+            </>
+          )}
         </div>
 
         {/* Connection Status for Authenticated Users */}
@@ -119,39 +131,55 @@ export default function Home() {
             </div>
 
             <div className="mb-4">
-              {nextPeriodInfo.isCurrentlyInClass && nextPeriodInfo.currentPeriod ? (
-                <div className="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-3">
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Currently in:</p>
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <p className="font-semibold">{nextPeriodInfo.currentPeriod.subject}</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
-                        {nextPeriodInfo.currentPeriod.period} • {nextPeriodInfo.currentPeriod.room}
-                      </p>
-                    </div>
-                    <div className="text-sm font-medium text-amber-600 dark:text-amber-400 pulse-subtle">
-                      {nextPeriodInfo.timeUntil}
-                    </div>
-                  </div>
-                </div>
-              ) : nextPeriodInfo.nextPeriod ? (
-                <div className="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-3">
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Next up:</p>
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <p className="font-semibold">{nextPeriodInfo.nextPeriod.subject}</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
-                        {nextPeriodInfo.nextPeriod.period} • {nextPeriodInfo.nextPeriod.room}
-                      </p>
-                    </div>
-                    <div className="text-sm font-medium text-theme-primary pulse-subtle">
-                      {nextPeriodInfo.timeUntil}
+              {isAuthenticated ? (
+                // Show personalized content when authenticated
+                nextPeriodInfo.isCurrentlyInClass && nextPeriodInfo.currentPeriod ? (
+                  <div className="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-3">
+                    <p className="text-sm text-gray-500 dark:text-gray-400">Currently in:</p>
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <p className="font-semibold">{nextPeriodInfo.currentPeriod.subject}</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                          {nextPeriodInfo.currentPeriod.period} • {nextPeriodInfo.currentPeriod.room}
+                        </p>
+                      </div>
+                      <div className="text-sm font-medium text-amber-600 dark:text-amber-400 pulse-subtle">
+                        {nextPeriodInfo.timeUntil}
+                      </div>
                     </div>
                   </div>
-                </div>
+                ) : nextPeriodInfo.nextPeriod ? (
+                  <div className="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-3">
+                    <p className="text-sm text-gray-500 dark:text-gray-400">Next up:</p>
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <p className="font-semibold">{nextPeriodInfo.nextPeriod.subject}</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                          {nextPeriodInfo.nextPeriod.period} • {nextPeriodInfo.nextPeriod.room}
+                        </p>
+                      </div>
+                      <div className="text-sm font-medium text-theme-primary pulse-subtle">
+                        {nextPeriodInfo.timeUntil}
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-3 text-center">
+                    <p className="text-gray-500 dark:text-gray-400">No more classes today</p>
+                  </div>
+                )
               ) : (
-                <div className="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-3 text-center">
-                  <p className="text-gray-500 dark:text-gray-400">No more classes today</p>
+                // Show sign-in prompt when not authenticated
+                <div className="bg-theme-secondary rounded-xl p-4 text-center">
+                  <p className="text-gray-600 dark:text-gray-300 mb-3">
+                    Sign in to see your personalized schedule and upcoming classes
+                  </p>
+                  <Link href="/auth">
+                    <Button size="sm" className="rounded-full bg-theme-primary hover:opacity-90">
+                      <ExternalLink className="h-3 w-3 mr-1" />
+                      Sign In
+                    </Button>
+                  </Link>
                 </div>
               )}
             </div>
