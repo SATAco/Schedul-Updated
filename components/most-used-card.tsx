@@ -10,6 +10,7 @@ import { formatDate } from "@/utils/time-utils"
 import { useTimetable } from "@/contexts/timetable-context"
 import { getCurrentDay } from "@/utils/time-utils"
 import { formatTimeTo12Hour } from "@/utils/bell-utils"
+import { useAuth } from "@/lib/api/hooks"
 
 // Mock data for different sections
 const notices = [
@@ -33,6 +34,7 @@ export default function MostUsedCard() {
   const [mostUsed, setMostUsed] = useState<NavItem>("timetable")
   const [mounted, setMounted] = useState(false)
   const { nextPeriodInfo, bellTimes } = useTimetable()
+  const { isAuthenticated } = useAuth()
   const currentDay = getCurrentDay()
 
   // Determine which bell times schedule to use based on the current day
@@ -104,6 +106,7 @@ export default function MostUsedCard() {
                       <p className="font-semibold">{nextPeriodInfo.currentPeriod.subject}</p>
                       <p className="text-xs text-gray-500 dark:text-gray-400">
                         {nextPeriodInfo.currentPeriod.period} • {nextPeriodInfo.currentPeriod.room}
+                        {!isAuthenticated && <span className="ml-1 text-blue-500">(Demo)</span>}
                       </p>
                     </div>
                     <div className="text-sm font-medium text-amber-600 dark:text-amber-400 pulse-subtle">
@@ -119,6 +122,7 @@ export default function MostUsedCard() {
                       <p className="font-semibold">{nextPeriodInfo.nextPeriod.subject}</p>
                       <p className="text-xs text-gray-500 dark:text-gray-400">
                         {nextPeriodInfo.nextPeriod.period} • {nextPeriodInfo.nextPeriod.room}
+                        {!isAuthenticated && <span className="ml-1 text-blue-500">(Demo)</span>}
                       </p>
                     </div>
                     <div className="text-sm font-medium text-theme-primary pulse-subtle">
@@ -128,7 +132,10 @@ export default function MostUsedCard() {
                 </div>
               ) : (
                 <div className="bg-theme-secondary rounded-xl p-3 text-center">
-                  <p className="text-gray-500 dark:text-gray-400">No more classes today</p>
+                  <p className="text-gray-500 dark:text-gray-400">
+                    No more classes today
+                    {!isAuthenticated && <span className="ml-1 text-blue-500">(Demo)</span>}
+                  </p>
                 </div>
               )}
             </div>
@@ -152,7 +159,10 @@ export default function MostUsedCard() {
               {notices.slice(0, 2).map((notice) => (
                 <div key={notice.id} className="bg-theme-secondary rounded-xl p-3">
                   <p className="font-semibold text-sm">{notice.title}</p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-1">{notice.content}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-1">
+                    {notice.content}
+                    {!isAuthenticated && <span className="ml-1 text-blue-500">(Demo)</span>}
+                  </p>
                 </div>
               ))}
             </div>
@@ -228,15 +238,17 @@ export default function MostUsedCard() {
             </div>
             <div className="bg-theme-secondary rounded-xl p-3 mb-3">
               <div className="flex justify-between items-center">
-                <p className="font-semibold text-sm">Total Points</p>
-                <p className="text-lg font-bold">75</p>
+                <p className="font-semibold text-sm">Total Nominations</p>
+                <p className="text-lg font-bold">
+                  8{!isAuthenticated && <span className="text-xs text-blue-500 ml-1">(Demo)</span>}
+                </p>
               </div>
               <div className="mt-2">
                 <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                  <div className="bg-theme-primary h-2 rounded-full" style={{ width: "75%" }}></div>
+                  <div className="bg-theme-primary h-2 rounded-full" style={{ width: "62%" }}></div>
                 </div>
                 <p className="text-xs text-gray-500 dark:text-gray-400 text-center mt-1">
-                  25 points until Bronze Award
+                  5 nominations until Gold Award
                 </p>
               </div>
             </div>

@@ -12,8 +12,9 @@ import SettingsMenu from "@/components/settings-menu"
 import { useTimetable } from "@/contexts/timetable-context"
 import BellCountdown from "@/components/bell-countdown"
 import { useAuth } from "@/lib/api/hooks"
-import { ExternalLink, Wifi } from "lucide-react"
+import { ExternalLink, Wifi, User } from "lucide-react"
 import Link from "next/link"
+import WelcomePopup from "@/components/welcome-popup"
 
 export default function Home() {
   const [currentTime, setCurrentTime] = useState<string>("")
@@ -50,6 +51,9 @@ export default function Home() {
 
   return (
     <PageTransition>
+      {/* Welcome Popup for new users */}
+      <WelcomePopup isAuthenticated={isAuthenticated} />
+
       <main className="container max-w-lg mx-auto px-4 py-6">
         <div className="flex justify-between items-center mb-6 fade-in">
           <div>
@@ -73,8 +77,8 @@ export default function Home() {
             </>
           ) : (
             <>
-              <h2 className="text-3xl font-bold theme-gradient">Hello Student!</h2>
-              <p className="text-lg text-gray-600 dark:text-gray-300 mt-2">Please Sign In!</p>
+              <h2 className="text-3xl font-bold theme-gradient">Welcome!</h2>
+              <p className="text-lg text-gray-600 dark:text-gray-300 mt-2">Explore your school schedule</p>
               <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                 {formatDate()} • {currentDay}
               </p>
@@ -92,23 +96,48 @@ export default function Home() {
           </div>
         )}
 
-        {/* Unauthenticated State */}
+        {/* Sign In Benefits Card - Only show when not authenticated */}
         {!isAuthenticated && (
           <Card className="rounded-[1.5rem] bg-white dark:bg-gray-900 shadow-md border border-gray-100 dark:border-gray-800 mb-6 hover-scale backdrop-blur-md bg-opacity-90 dark:bg-opacity-90">
-            <CardContent className="p-5 text-center">
-              <div className="mb-4">
-                <div className="mx-auto w-12 h-12 bg-theme-secondary rounded-full flex items-center justify-center mb-3">
-                  <ExternalLink className="h-6 w-6 text-theme-primary" />
+            <CardContent className="p-5">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="rounded-full p-2 bg-theme-secondary text-theme-primary">
+                  <User className="h-5 w-5" />
                 </div>
-                <h3 className="font-semibold text-lg mb-2">Connect Your Account</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
-                  Sign in with your SBHS Student Portal to access your personalized timetable, notices, and more.
+                <h3 className="font-semibold text-lg">Personalize Your Experience</h3>
+              </div>
+
+              <div className="space-y-3 mb-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-2 h-2 rounded-full bg-theme-primary mt-2 flex-shrink-0"></div>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    <strong>Your Real Timetable:</strong> See your actual classes, teachers, and rooms
+                  </p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-2 h-2 rounded-full bg-theme-primary mt-2 flex-shrink-0"></div>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    <strong>Personal Notices:</strong> Get notices relevant to your year group
+                  </p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-2 h-2 rounded-full bg-theme-primary mt-2 flex-shrink-0"></div>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    <strong>Award Points:</strong> Track your actual recognition points and nominations
+                  </p>
+                </div>
+              </div>
+
+              <div className="bg-theme-secondary rounded-xl p-3 mb-4">
+                <p className="text-sm text-gray-600 dark:text-gray-300 text-center">
+                  Currently viewing demo data. Sign in to see your personal information.
                 </p>
               </div>
+
               <Link href="/auth">
-                <Button className="rounded-xl bg-theme-primary hover:opacity-90">
+                <Button className="w-full rounded-xl bg-theme-primary hover:opacity-90">
                   <ExternalLink className="h-4 w-4 mr-2" />
-                  Sign in with SBHS Portal
+                  Connect SBHS Portal
                 </Button>
               </Link>
             </CardContent>
@@ -131,55 +160,45 @@ export default function Home() {
             </div>
 
             <div className="mb-4">
-              {isAuthenticated ? (
-                // Show personalized content when authenticated
-                nextPeriodInfo.isCurrentlyInClass && nextPeriodInfo.currentPeriod ? (
-                  <div className="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-3">
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Currently in:</p>
-                    <div className="flex justify-between items-center">
-                      <div>
-                        <p className="font-semibold">{nextPeriodInfo.currentPeriod.subject}</p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                          {nextPeriodInfo.currentPeriod.period} • {nextPeriodInfo.currentPeriod.room}
-                        </p>
-                      </div>
-                      <div className="text-sm font-medium text-amber-600 dark:text-amber-400 pulse-subtle">
-                        {nextPeriodInfo.timeUntil}
-                      </div>
+              {/* Always show timetable info - either real or demo */}
+              {nextPeriodInfo.isCurrentlyInClass && nextPeriodInfo.currentPeriod ? (
+                <div className="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-3">
+                  <p className="text-sm text-gray-500 dark:text-gray-400">Currently in:</p>
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <p className="font-semibold">{nextPeriodInfo.currentPeriod.subject}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        {nextPeriodInfo.currentPeriod.period} • {nextPeriodInfo.currentPeriod.room}
+                        {!isAuthenticated && <span className="ml-1 text-blue-500">(Demo)</span>}
+                      </p>
+                    </div>
+                    <div className="text-sm font-medium text-amber-600 dark:text-amber-400 pulse-subtle">
+                      {nextPeriodInfo.timeUntil}
                     </div>
                   </div>
-                ) : nextPeriodInfo.nextPeriod ? (
-                  <div className="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-3">
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Next up:</p>
-                    <div className="flex justify-between items-center">
-                      <div>
-                        <p className="font-semibold">{nextPeriodInfo.nextPeriod.subject}</p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                          {nextPeriodInfo.nextPeriod.period} • {nextPeriodInfo.nextPeriod.room}
-                        </p>
-                      </div>
-                      <div className="text-sm font-medium text-theme-primary pulse-subtle">
-                        {nextPeriodInfo.timeUntil}
-                      </div>
+                </div>
+              ) : nextPeriodInfo.nextPeriod ? (
+                <div className="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-3">
+                  <p className="text-sm text-gray-500 dark:text-gray-400">Next up:</p>
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <p className="font-semibold">{nextPeriodInfo.nextPeriod.subject}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        {nextPeriodInfo.nextPeriod.period} • {nextPeriodInfo.nextPeriod.room}
+                        {!isAuthenticated && <span className="ml-1 text-blue-500">(Demo)</span>}
+                      </p>
+                    </div>
+                    <div className="text-sm font-medium text-theme-primary pulse-subtle">
+                      {nextPeriodInfo.timeUntil}
                     </div>
                   </div>
-                ) : (
-                  <div className="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-3 text-center">
-                    <p className="text-gray-500 dark:text-gray-400">No more classes today</p>
-                  </div>
-                )
+                </div>
               ) : (
-                // Show sign-in prompt when not authenticated
-                <div className="bg-theme-secondary rounded-xl p-4 text-center">
-                  <p className="text-gray-600 dark:text-gray-300 mb-3">
-                    Sign in to see your personalized schedule and upcoming classes
+                <div className="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-3 text-center">
+                  <p className="text-gray-500 dark:text-gray-400">
+                    No more classes today
+                    {!isAuthenticated && <span className="ml-1 text-blue-500">(Demo)</span>}
                   </p>
-                  <Link href="/auth">
-                    <Button size="sm" className="rounded-full bg-theme-primary hover:opacity-90">
-                      <ExternalLink className="h-3 w-3 mr-1" />
-                      Sign In
-                    </Button>
-                  </Link>
                 </div>
               )}
             </div>

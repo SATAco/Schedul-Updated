@@ -4,7 +4,8 @@ import { useState, useEffect } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { useAuth } from "@/lib/api/hooks"
-import { School, ExternalLink, Wifi, WifiOff } from "lucide-react"
+import { School, ExternalLink, Wifi, WifiOff, ArrowLeft, Calendar, Bell, Award } from "lucide-react"
+import Link from "next/link"
 
 interface SignInButtonProps {
   onSuccess?: () => void
@@ -40,14 +41,62 @@ export default function SignInButton({ onSuccess }: SignInButtonProps) {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 px-4">
       <Card className="w-full max-w-md rounded-[1.5rem] shadow-lg">
         <CardContent className="p-8">
+          {/* Header */}
+          <div className="flex items-center justify-between mb-6">
+            <Link href="/" className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300">
+              <ArrowLeft className="h-5 w-5" />
+            </Link>
+            <h1 className="text-lg font-semibold">Connect Your Account</h1>
+            <div className="w-5"></div>
+          </div>
+
           <div className="text-center mb-8">
             <div className="mx-auto w-16 h-16 bg-theme-secondary rounded-full flex items-center justify-center mb-4">
               <School className="h-8 w-8 text-theme-primary" />
             </div>
-            <h1 className="text-2xl font-bold theme-gradient">Schedul</h1>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-              Connect with your SBHS Student Portal account
+            <h2 className="text-xl font-bold theme-gradient mb-2">Personalize Your Experience</h2>
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              Connect with your SBHS Student Portal to see your real data
             </p>
+          </div>
+
+          {/* Benefits */}
+          <div className="space-y-4 mb-6">
+            <div className="flex items-start gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
+              <div className="rounded-full p-1 bg-blue-100 dark:bg-blue-900/30">
+                <Calendar className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+              </div>
+              <div>
+                <h3 className="font-medium text-blue-900 dark:text-blue-100 text-sm">Your Real Timetable</h3>
+                <p className="text-xs text-blue-700 dark:text-blue-300">
+                  See your actual classes, teachers, and room numbers
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3 p-3 bg-green-50 dark:bg-green-900/20 rounded-xl">
+              <div className="rounded-full p-1 bg-green-100 dark:bg-green-900/30">
+                <Bell className="h-4 w-4 text-green-600 dark:text-green-400" />
+              </div>
+              <div>
+                <h3 className="font-medium text-green-900 dark:text-green-100 text-sm">Personal Notices</h3>
+                <p className="text-xs text-green-700 dark:text-green-300">
+                  Get notices relevant to your year group and activities
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3 p-3 bg-purple-50 dark:bg-purple-900/20 rounded-xl">
+              <div className="rounded-full p-1 bg-purple-100 dark:bg-purple-900/30">
+                <Award className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+              </div>
+              <div>
+                <h3 className="font-medium text-purple-900 dark:text-purple-100 text-sm">Award Points</h3>
+                <p className="text-xs text-purple-700 dark:text-purple-300">
+                  Track your actual recognition points and nominations
+                </p>
+              </div>
+            </div>
           </div>
 
           {/* Portal Status Indicator */}
@@ -74,7 +123,7 @@ export default function SignInButton({ onSuccess }: SignInButtonProps) {
             </div>
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-4">
             <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-4">
               <div className="flex items-start gap-3">
                 <div className="rounded-full p-1 bg-blue-100 dark:bg-blue-900/30">
@@ -103,7 +152,7 @@ export default function SignInButton({ onSuccess }: SignInButtonProps) {
               ) : (
                 <div className="flex items-center gap-2">
                   <ExternalLink className="h-5 w-5" />
-                  Sign in with SBHS Portal
+                  Connect SBHS Portal
                 </div>
               )}
             </Button>
@@ -115,6 +164,16 @@ export default function SignInButton({ onSuccess }: SignInButtonProps) {
                 </p>
               </div>
             )}
+
+            <div className="text-center">
+              <Link
+                href="/"
+                className="inline-flex items-center text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
+              >
+                <ArrowLeft className="h-4 w-4 mr-1" />
+                Continue with demo data
+              </Link>
+            </div>
           </div>
 
           <div className="mt-8 space-y-4">
@@ -130,15 +189,9 @@ export default function SignInButton({ onSuccess }: SignInButtonProps) {
               </a>
             </div>
 
-            <div className="text-center">
-              <p className="text-xs text-gray-500 dark:text-gray-400">
-                Having trouble? Contact the school IT department for assistance.
-              </p>
-            </div>
-
             <div className="text-center pt-4 border-t border-gray-200 dark:border-gray-700">
               <p className="text-xs text-gray-500 dark:text-gray-400">
-                By signing in, you agree to use your SBHS credentials responsibly and in accordance with school
+                By connecting, you agree to use your SBHS credentials responsibly and in accordance with school
                 policies.
               </p>
             </div>
