@@ -29,9 +29,13 @@
     --sbhs-blue: 217 71% 53%;
     --sbhs-gold: 43 89% 38%;
 
-    /* Theme color (will be set by JS) */
-    --theme-color-light: from-blue-600 to-blue-800;
-    --theme-color-dark: from-blue-500 to-blue-700;
+    /* Dynamic theme colors - Blue default */
+    --theme-primary: 217 91% 60%;
+    --theme-primary-dark: 217 91% 50%;
+    --theme-secondary: 217 91% 95%;
+    --theme-secondary-dark: 217 91% 15%;
+    --theme-accent: 217 91% 85%;
+    --theme-accent-dark: 217 91% 25%;
   }
 
   .dark {
@@ -112,6 +116,55 @@
   .backdrop-blur-card {
     @apply backdrop-blur-md bg-opacity-90 dark:bg-opacity-90;
   }
+
+  /* Theme color utilities */
+  .text-theme-primary {
+    color: hsl(var(--theme-primary));
+  }
+
+  .dark .text-theme-primary {
+    color: hsl(var(--theme-primary-dark));
+  }
+
+  .bg-theme-primary {
+    background-color: hsl(var(--theme-primary));
+  }
+
+  .dark .bg-theme-primary {
+    background-color: hsl(var(--theme-primary-dark));
+  }
+
+  .bg-theme-secondary {
+    background-color: hsl(var(--theme-secondary));
+  }
+
+  .dark .bg-theme-secondary {
+    background-color: hsl(var(--theme-secondary-dark));
+  }
+
+  .bg-theme-accent {
+    background-color: hsl(var(--theme-accent));
+  }
+
+  .dark .bg-theme-accent {
+    background-color: hsl(var(--theme-accent-dark));
+  }
+
+  .border-theme-primary {
+    border-color: hsl(var(--theme-primary));
+  }
+
+  .dark .border-theme-primary {
+    border-color: hsl(var(--theme-primary-dark));
+  }
+
+  .ring-theme-primary {
+    --tw-ring-color: hsl(var(--theme-primary));
+  }
+
+  .dark .ring-theme-primary {
+    --tw-ring-color: hsl(var(--theme-primary-dark));
+  }
 }
 
 @keyframes fadeIn {
@@ -148,11 +201,11 @@
   }
 
   .one-ui-button {
-    @apply rounded-full px-5 py-3 bg-blue-500 text-white font-medium shadow-sm transition-all duration-200 ease-in-out hover:bg-blue-600 active:scale-95;
+    @apply rounded-full px-5 py-3 bg-theme-primary text-white font-medium shadow-sm transition-all duration-200 ease-in-out hover:opacity-90 active:scale-95;
   }
 
   .one-ui-input {
-    @apply rounded-full border border-gray-200 dark:border-gray-700 px-5 py-3 transition-all duration-200 ease-in-out focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+    @apply rounded-full border border-gray-200 dark:border-gray-700 px-5 py-3 transition-all duration-200 ease-in-out focus:ring-2 ring-theme-primary focus:border-transparent;
   }
 
   .one-ui-icon-container {
@@ -196,6 +249,9 @@
   }
 
   .theme-gradient {
-    @apply bg-gradient-to-r var(--theme-color-light) dark:var(--theme-color-dark) bg-clip-text text-transparent;
+    background: linear-gradient(135deg, hsl(var(--theme-primary)), hsl(var(--theme-primary-dark)));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 }

@@ -50,14 +50,28 @@ export function UserSettingsProvider({ children }: { children: React.ReactNode }
     localStorage.setItem("schedul-color-theme", theme)
 
     // Apply the color theme to CSS variables
-    document.documentElement.style.setProperty("--theme-color-light", getThemeColor(theme, "light"))
-    document.documentElement.style.setProperty("--theme-color-dark", getThemeColor(theme, "dark"))
+    const colors = getThemeColors(theme)
+    const root = document.documentElement
+
+    root.style.setProperty("--theme-primary", colors.primary)
+    root.style.setProperty("--theme-primary-dark", colors.primaryDark)
+    root.style.setProperty("--theme-secondary", colors.secondary)
+    root.style.setProperty("--theme-secondary-dark", colors.secondaryDark)
+    root.style.setProperty("--theme-accent", colors.accent)
+    root.style.setProperty("--theme-accent-dark", colors.accentDark)
   }
 
   // Apply initial color theme
   useEffect(() => {
-    document.documentElement.style.setProperty("--theme-color-light", getThemeColor(colorTheme, "light"))
-    document.documentElement.style.setProperty("--theme-color-dark", getThemeColor(colorTheme, "dark"))
+    const colors = getThemeColors(colorTheme)
+    const root = document.documentElement
+
+    root.style.setProperty("--theme-primary", colors.primary)
+    root.style.setProperty("--theme-primary-dark", colors.primaryDark)
+    root.style.setProperty("--theme-secondary", colors.secondary)
+    root.style.setProperty("--theme-secondary-dark", colors.secondaryDark)
+    root.style.setProperty("--theme-accent", colors.accent)
+    root.style.setProperty("--theme-accent-dark", colors.accentDark)
   }, [colorTheme])
 
   return (
@@ -76,29 +90,49 @@ export function useUserSettings() {
 }
 
 // Helper function to get theme color values
-function getThemeColor(theme: ColorTheme, mode: "light" | "dark"): string {
-  const colors = {
+function getThemeColors(theme: ColorTheme) {
+  const colorMap = {
     blue: {
-      light: "from-blue-600 to-blue-800",
-      dark: "from-blue-500 to-blue-700",
+      primary: "217 91% 60%",
+      primaryDark: "217 91% 50%",
+      secondary: "217 91% 95%",
+      secondaryDark: "217 91% 15%",
+      accent: "217 91% 85%",
+      accentDark: "217 91% 25%",
     },
     purple: {
-      light: "from-purple-600 to-purple-800",
-      dark: "from-purple-500 to-purple-700",
+      primary: "262 83% 58%",
+      primaryDark: "262 83% 48%",
+      secondary: "262 83% 95%",
+      secondaryDark: "262 83% 15%",
+      accent: "262 83% 85%",
+      accentDark: "262 83% 25%",
     },
     green: {
-      light: "from-green-600 to-green-800",
-      dark: "from-green-500 to-green-700",
+      primary: "142 76% 36%",
+      primaryDark: "142 76% 26%",
+      secondary: "142 76% 95%",
+      secondaryDark: "142 76% 15%",
+      accent: "142 76% 85%",
+      accentDark: "142 76% 25%",
     },
     red: {
-      light: "from-red-600 to-red-800",
-      dark: "from-red-500 to-red-700",
+      primary: "0 84% 60%",
+      primaryDark: "0 84% 50%",
+      secondary: "0 84% 95%",
+      secondaryDark: "0 84% 15%",
+      accent: "0 84% 85%",
+      accentDark: "0 84% 25%",
     },
     orange: {
-      light: "from-orange-600 to-orange-800",
-      dark: "from-orange-500 to-orange-700",
+      primary: "25 95% 53%",
+      primaryDark: "25 95% 43%",
+      secondary: "25 95% 95%",
+      secondaryDark: "25 95% 15%",
+      accent: "25 95% 85%",
+      accentDark: "25 95% 25%",
     },
   }
 
-  return colors[theme][mode]
+  return colorMap[theme]
 }

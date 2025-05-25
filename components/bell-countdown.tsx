@@ -120,18 +120,18 @@ export default function BellCountdown() {
       ) : (
         <>
           <div className="flex items-center gap-3 mb-3">
-            <div className="rounded-full p-2 bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">
+            <div className="rounded-full p-2 bg-theme-secondary text-theme-primary">
               <Bell className="h-5 w-5" />
             </div>
             <h2 className="text-lg font-semibold">Next Bell in...</h2>
           </div>
-          <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4">
+          <div className="bg-theme-secondary rounded-xl p-4">
             <div className="flex justify-between items-center mb-2">
               <p className="font-semibold">{nextBellInfo.nextBell?.period}</p>
               <p className="text-xs text-gray-500 dark:text-gray-400">Starts in</p>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2 font-mono">{countdown}</div>
+              <div className="text-3xl font-bold text-theme-primary mb-2 font-mono">{countdown}</div>
             </div>
             <div className="text-center text-sm text-gray-500 dark:text-gray-400">
               Starts at {formatTimeTo12Hour(nextBellInfo.nextBell?.time.split(" - ")[0] || "")}

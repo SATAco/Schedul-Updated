@@ -75,12 +75,12 @@ export default function BottomNav({ onNavItemClick }: BottomNavProps) {
               href={item.href}
               className={`flex flex-col items-center justify-center p-2 rounded-xl transition-all duration-200 ease-in-out ${
                 isActive
-                  ? "text-blue-600 dark:text-blue-400"
+                  ? "text-theme-primary"
                   : "text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800"
               }`}
               onClick={() => handleClick(item.name)}
             >
-              <div className={`p-1 rounded-full ${isActive ? "bg-blue-100 dark:bg-blue-900/30" : ""}`}>
+              <div className={`p-1 rounded-full ${isActive ? "bg-theme-secondary" : ""}`}>
                 {isActive ? (
                   <motion.div initial={{ scale: 0.8 }} animate={{ scale: 1 }} transition={{ duration: 0.2 }}>
                     {item.icon}
@@ -92,7 +92,7 @@ export default function BottomNav({ onNavItemClick }: BottomNavProps) {
               <span className="text-xs mt-1">{item.label}</span>
               {isActive && (
                 <motion.div
-                  className="absolute -bottom-2 w-1 h-1 bg-blue-600 dark:bg-blue-400 rounded-full"
+                  className="absolute -bottom-2 w-1 h-1 bg-theme-primary rounded-full"
                   layoutId="activeIndicator"
                   transition={{ duration: 0.3 }}
                 />

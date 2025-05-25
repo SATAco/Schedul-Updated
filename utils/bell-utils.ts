@@ -1,5 +1,15 @@
 import type { BellTime } from "@/contexts/timetable-context"
-import { formatTo12Hour, isWithinSchoolHours } from "./time-utils"
+import { isWithinSchoolHours } from "./time-utils"
+
+// Format time to 12-hour format
+const formatTo12Hour = (date: Date): string => {
+  let hours = date.getHours()
+  const minutes = date.getMinutes().toString().padStart(2, "0")
+  const ampm = hours >= 12 ? "PM" : "AM"
+  hours = hours % 12
+  hours = hours ? hours : 12 // the hour '0' should be '12'
+  return `${hours}:${minutes} ${ampm}`
+}
 
 // Parse time string (e.g., "9:00 - 10:05" or "3:10") to get Date object
 export const parseBellTime = (timeString: string): { start: Date; end: Date | null } => {

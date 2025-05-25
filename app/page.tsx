@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { Card, CardContent } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
 import { getCurrentTime, getCurrentDay, formatDate } from "@/utils/time-utils"
 import MostUsedCard from "@/components/most-used-card"
 import { trackSectionUsage } from "@/utils/usage-tracker"
@@ -10,13 +11,15 @@ import PageTransition from "@/components/page-transition"
 import SettingsMenu from "@/components/settings-menu"
 import { useTimetable } from "@/contexts/timetable-context"
 import BellCountdown from "@/components/bell-countdown"
-import { useUserSettings } from "@/components/theme-provider"
+import { useAuth } from "@/lib/api/hooks"
+import { ExternalLink, Wifi } from "lucide-react"
+import Link from "next/link"
 
 export default function Home() {
   const [currentTime, setCurrentTime] = useState<string>("")
   const [mounted, setMounted] = useState(false)
   const { nextPeriodInfo } = useTimetable()
-  const { colorTheme } = useUserSettings()
+  const { isAuthenticated } = useAuth()
 
   // Mock student data
   const studentName = "John"
@@ -45,22 +48,6 @@ export default function Home() {
   // Avoid hydration mismatch
   if (!mounted) return null
 
-  // Get color theme classes
-  const getThemeColorClass = () => {
-    switch (colorTheme) {
-      case "purple":
-        return "bg-gradient-to-r from-purple-600 to-purple-800 dark:from-purple-500 dark:to-purple-700"
-      case "green":
-        return "bg-gradient-to-r from-green-600 to-green-800 dark:from-green-500 dark:to-green-700"
-      case "red":
-        return "bg-gradient-to-r from-red-600 to-red-800 dark:from-red-500 dark:to-red-700"
-      case "orange":
-        return "bg-gradient-to-r from-orange-600 to-orange-800 dark:from-orange-500 dark:to-orange-700"
-      default:
-        return "bg-gradient-to-r from-blue-600 to-blue-800 dark:from-blue-500 dark:to-blue-700"
-    }
-  }
-
   return (
     <PageTransition>
       <main className="container max-w-lg mx-auto px-4 py-6">
@@ -77,13 +64,44 @@ export default function Home() {
 
         {/* Personal Greeting */}
         <div className="mb-6 slide-up">
-          <h2 className={`text-3xl font-bold bg-clip-text text-transparent ${getThemeColorClass()}`}>
-            Hi, {studentName}!
-          </h2>
+          <h2 className="text-3xl font-bold theme-gradient">Hi, {studentName}!</h2>
           <p className="text-sm text-gray-500 dark:text-gray-400">
             {formatDate()} • {currentDay}
           </p>
         </div>
+
+        {/* Connection Status for Authenticated Users */}
+        {isAuthenticated && (
+          <div className="mb-4 slide-up">
+            <div className="flex items-center gap-2 text-sm px-3 py-2 rounded-full bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 w-fit">
+              <Wifi className="h-3 w-3" />
+              <span>Connected to SBHS Portal</span>
+            </div>
+          </div>
+        )}
+
+        {/* Unauthenticated State */}
+        {!isAuthenticated && (
+          <Card className="rounded-[1.5rem] bg-white dark:bg-gray-900 shadow-md border border-gray-100 dark:border-gray-800 mb-6 hover-scale backdrop-blur-md bg-opacity-90 dark:bg-opacity-90">
+            <CardContent className="p-5 text-center">
+              <div className="mb-4">
+                <div className="mx-auto w-12 h-12 bg-theme-secondary rounded-full flex items-center justify-center mb-3">
+                  <ExternalLink className="h-6 w-6 text-theme-primary" />
+                </div>
+                <h3 className="font-semibold text-lg mb-2">Connect Your Account</h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+                  Sign in with your SBHS Student Portal to access your personalized timetable, notices, and more.
+                </p>
+              </div>
+              <Link href="/auth">
+                <Button className="rounded-xl bg-theme-primary hover:opacity-90">
+                  <ExternalLink className="h-4 w-4 mr-2" />
+                  Sign in with SBHS Portal
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Bell Countdown */}
         <div className="mb-6 slide-up">
@@ -95,7 +113,7 @@ export default function Home() {
           <CardContent className="p-5">
             <div className="flex justify-between items-center mb-4">
               <h3 className="font-semibold text-lg">At a Glance</h3>
-              <div className="text-sm font-medium bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 px-3 py-1 rounded-full">
+              <div className="text-sm font-medium bg-theme-secondary text-theme-primary px-3 py-1 rounded-full">
                 {currentTime}
               </div>
             </div>
@@ -126,7 +144,7 @@ export default function Home() {
                         {nextPeriodInfo.nextPeriod.period} • {nextPeriodInfo.nextPeriod.room}
                       </p>
                     </div>
-                    <div className="text-sm font-medium text-blue-600 dark:text-blue-400 pulse-subtle">
+                    <div className="text-sm font-medium text-theme-primary pulse-subtle">
                       {nextPeriodInfo.timeUntil}
                     </div>
                   </div>
