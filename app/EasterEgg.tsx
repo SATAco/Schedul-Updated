@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import "./EasterEgg.css"; // Create this for your animation style
+import "./EasterEgg.css"; // Make sure this exists
 
-const SECRET_CODE = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", 
-                     "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"];
+const SECRET_CODE = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown"];
 
 export default function EasterEgg() {
   const [show, setShow] = useState(false);
@@ -26,8 +25,12 @@ export default function EasterEgg() {
 
   return (
     <div className="easter-egg-animation">
-      {/* Replace this with your custom animation */}
-      <h1>🎉 Secret Unlocked! 🎉</h1>
+      <div className="confetti-container">
+        {[...Array(30)].map((_, i) => (
+          <div key={i} className={`confetti confetti-${i % 6}`}></div>
+        ))}
+      </div>
+      <h1 className="secret-title">🎉 Secret Unlocked! 🎉</h1>
     </div>
   );
 }
