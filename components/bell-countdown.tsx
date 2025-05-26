@@ -6,17 +6,18 @@ import { getNextBell, formatCountdown, formatTimeTo12Hour } from "@/utils/bell-u
 import { getCurrentDay, isWithinSchoolHours } from "@/utils/time-utils"
 import { Clock, Bell } from "lucide-react"
 import { Card } from "@/components/ui/card"
+import { CardContent } from "@/components/ui/card"
 
 export default function BellCountdown() {
   const { bellTimes } = useTimetable()
   const [countdown, setCountdown] = useState("00:00")
-  const [nextBellInfo, setNextBellInfo] = useState<{
+  const [nextPeriodInfo, setNextPeriodInfo] = useState<{
     nextBell: { period: string; time: string } | null
-    isCurrentlyInPeriod: boolean
+    isCurrentlyInClass: boolean
     currentPeriod: { period: string; time: string } | null
   }>({
     nextBell: null,
-    isCurrentlyInPeriod: false,
+    isCurrentlyInClass: false,
     currentPeriod: null,
   })
 
@@ -42,9 +43,9 @@ export default function BellCountdown() {
 
       const { nextBell, timeUntil, isCurrentlyInPeriod, currentPeriod } = getNextBell(currentBellTimes)
 
-      setNextBellInfo({
+      setNextPeriodInfo({
         nextBell,
-        isCurrentlyInPeriod,
+        isCurrentlyInClass: isCurrentlyInPeriod,
         currentPeriod,
       })
 
@@ -76,7 +77,7 @@ export default function BellCountdown() {
     )
   }
 
-  if (!nextBellInfo.nextBell && !nextBellInfo.currentPeriod) {
+  if (!nextPeriodInfo.nextBell && !nextPeriodInfo.currentPeriod) {
     return (
       <Card className="rounded-[1.5rem] bg-white dark:bg-gray-900 shadow-md border border-gray-100 dark:border-gray-800 p-5">
         <div className="flex items-center gap-3 mb-3">
@@ -94,51 +95,53 @@ export default function BellCountdown() {
 
   return (
     <Card className="rounded-[1.5rem] bg-white dark:bg-gray-900 shadow-md border border-gray-100 dark:border-gray-800 p-5">
-      {nextBellInfo.isCurrentlyInPeriod ? (
-        <>
-          <div className="flex items-center gap-3 mb-3">
-            <div className="rounded-full p-2 bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400">
-              <Clock className="h-5 w-5" />
-            </div>
-            <h2 className="text-lg font-semibold">Next Bell in...</h2>
-          </div>
-          <div className="bg-amber-50 dark:bg-amber-900/20 rounded-xl p-4">
-            <div className="flex justify-between items-center mb-2">
-              <p className="font-semibold">{nextBellInfo.currentPeriod?.period}</p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">Ends in</p>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-amber-600 dark:text-amber-400 mb-2 font-mono">{countdown}</div>
-            </div>
-            {nextBellInfo.nextBell && (
-              <div className="text-center text-sm text-gray-500 dark:text-gray-400">
-                Next: {nextBellInfo.nextBell.period} at {formatTimeTo12Hour(nextBellInfo.nextBell.time.split(" - ")[0])}
+      <CardContent className="p-4">
+        {nextPeriodInfo.isCurrentlyInClass ? (
+          <>
+            <div className="flex items-center gap-2 mb-3">
+              <div className="rounded-full p-1.5 bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400">
+                <Clock className="h-4 w-4" />
               </div>
-            )}
-          </div>
-        </>
-      ) : (
-        <>
-          <div className="flex items-center gap-3 mb-3">
-            <div className="rounded-full p-2 bg-theme-secondary text-theme-primary">
-              <Bell className="h-5 w-5" />
+              <h2 className="text-base font-semibold">Next Bell in...</h2>
             </div>
-            <h2 className="text-lg font-semibold">Next Bell in...</h2>
-          </div>
-          <div className="bg-theme-secondary rounded-xl p-4">
-            <div className="flex justify-between items-center mb-2">
-              <p className="font-semibold">{nextBellInfo.nextBell?.period}</p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">Starts in</p>
+            <div className="bg-amber-50 dark:bg-amber-900/20 rounded-xl p-3">
+              <div className="flex justify-between items-center mb-2">
+                <p className="font-semibold text-sm">{nextPeriodInfo.currentPeriod?.period}</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">Ends in</p>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-amber-600 dark:text-amber-400 mb-1 font-mono">{countdown}</div>
+              </div>
+              {nextPeriodInfo.nextBell && (
+                <div className="text-center text-xs text-gray-500 dark:text-gray-400">
+                  Next: {nextPeriodInfo.nextBell.period}
+                </div>
+              )}
             </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-theme-primary mb-2 font-mono">{countdown}</div>
+          </>
+        ) : (
+          <>
+            <div className="flex items-center gap-2 mb-3">
+              <div className="rounded-full p-1.5 bg-theme-secondary text-theme-primary">
+                <Bell className="h-4 w-4" />
+              </div>
+              <h2 className="text-base font-semibold">Next Bell in...</h2>
             </div>
-            <div className="text-center text-sm text-gray-500 dark:text-gray-400">
-              Starts at {formatTimeTo12Hour(nextBellInfo.nextBell?.time.split(" - ")[0] || "")}
+            <div className="bg-theme-secondary rounded-xl p-3">
+              <div className="flex justify-between items-center mb-2">
+                <p className="font-semibold text-sm">{nextPeriodInfo.nextBell?.period}</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">Starts in</p>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-theme-primary mb-1 font-mono">{countdown}</div>
+              </div>
+              <div className="text-center text-xs text-gray-500 dark:text-gray-400">
+                Starts at {formatTimeTo12Hour(nextPeriodInfo.nextBell?.time.split(" - ")[0] || "")}
+              </div>
             </div>
-          </div>
-        </>
-      )}
+          </>
+        )}
+      </CardContent>
     </Card>
   )
 }

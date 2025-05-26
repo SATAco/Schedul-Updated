@@ -93,46 +93,40 @@ export default function MostUsedCard() {
       case "timetable":
         return (
           <>
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="font-semibold">Today's Classes</h3>
-              <span className="text-sm text-gray-500 dark:text-gray-400">{formatDate()}</span>
-            </div>
-            <div className="space-y-2 mb-3">
+            <div className="space-y-2 mb-3 flex-1">
               {nextPeriodInfo.isCurrentlyInClass && nextPeriodInfo.currentPeriod ? (
-                <div className="bg-theme-secondary rounded-xl p-3">
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Currently in:</p>
+                <div className="bg-theme-secondary rounded-xl p-2">
+                  <p className="text-xs text-gray-500 dark:text-gray-400">Currently in:</p>
                   <div className="flex justify-between items-center">
                     <div>
-                      <p className="font-semibold">{nextPeriodInfo.currentPeriod.subject}</p>
+                      <p className="font-semibold text-sm">{nextPeriodInfo.currentPeriod.subject}</p>
                       <p className="text-xs text-gray-500 dark:text-gray-400">
-                        {nextPeriodInfo.currentPeriod.period} • {nextPeriodInfo.currentPeriod.room}
+                        {nextPeriodInfo.currentPeriod.room}
                         {!isAuthenticated && <span className="ml-1 text-blue-500">(Demo)</span>}
                       </p>
                     </div>
-                    <div className="text-sm font-medium text-amber-600 dark:text-amber-400 pulse-subtle">
+                    <div className="text-xs font-medium text-amber-600 dark:text-amber-400">
                       {nextPeriodInfo.timeUntil}
                     </div>
                   </div>
                 </div>
               ) : nextPeriodInfo.nextPeriod ? (
-                <div className="bg-theme-secondary rounded-xl p-3">
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Next up:</p>
+                <div className="bg-theme-secondary rounded-xl p-2">
+                  <p className="text-xs text-gray-500 dark:text-gray-400">Next up:</p>
                   <div className="flex justify-between items-center">
                     <div>
-                      <p className="font-semibold">{nextPeriodInfo.nextPeriod.subject}</p>
+                      <p className="font-semibold text-sm">{nextPeriodInfo.nextPeriod.subject}</p>
                       <p className="text-xs text-gray-500 dark:text-gray-400">
-                        {nextPeriodInfo.nextPeriod.period} • {nextPeriodInfo.nextPeriod.room}
+                        {nextPeriodInfo.nextPeriod.room}
                         {!isAuthenticated && <span className="ml-1 text-blue-500">(Demo)</span>}
                       </p>
                     </div>
-                    <div className="text-sm font-medium text-theme-primary pulse-subtle">
-                      {nextPeriodInfo.timeUntil}
-                    </div>
+                    <div className="text-xs font-medium text-theme-primary">{nextPeriodInfo.timeUntil}</div>
                   </div>
                 </div>
               ) : (
-                <div className="bg-theme-secondary rounded-xl p-3 text-center">
-                  <p className="text-gray-500 dark:text-gray-400">
+                <div className="bg-theme-secondary rounded-xl p-2 text-center">
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
                     No more classes today
                     {!isAuthenticated && <span className="ml-1 text-blue-500">(Demo)</span>}
                   </p>
@@ -141,10 +135,10 @@ export default function MostUsedCard() {
             </div>
             <Link
               href="/timetable"
-              className="flex items-center justify-center text-sm text-theme-primary hover:opacity-80 transition-all duration-200 ease-in-out"
+              className="flex items-center justify-center text-xs text-theme-primary hover:opacity-80 transition-all duration-200 ease-in-out"
             >
-              View full timetable
-              <ArrowRight className="h-4 w-4 ml-1" />
+              View timetable
+              <ArrowRight className="h-3 w-3 ml-1" />
             </Link>
           </>
         )
@@ -306,12 +300,12 @@ export default function MostUsedCard() {
 
   return (
     <Card className="rounded-[1.5rem] bg-white dark:bg-gray-900 shadow-md border border-gray-100 dark:border-gray-800 hover-scale backdrop-blur-card">
-      <CardContent className="p-5">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="rounded-full p-2 bg-theme-secondary text-theme-primary">{getIcon()}</div>
-          <h2 className="text-lg font-semibold">{getTitle()}</h2>
+      <CardContent className="p-4 h-full flex flex-col">
+        <div className="flex items-center gap-2 mb-3">
+          <div className="rounded-full p-1.5 bg-theme-secondary text-theme-primary">{getIcon()}</div>
+          <h2 className="text-base font-semibold">{getTitle()}</h2>
         </div>
-        {renderContent()}
+        <div className="flex-1 overflow-hidden">{renderContent()}</div>
       </CardContent>
     </Card>
   )
