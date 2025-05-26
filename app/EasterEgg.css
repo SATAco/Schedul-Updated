@@ -75,7 +75,7 @@
   }
 }
 
-/* Randomize confetti positions using nth-child selectors */
+/*Adjustable direction of confetti */
 .confetti:nth-child(1) { --rand-x: -12; --rand-y: -10; }
 .confetti:nth-child(2) { --rand-x: 9; --rand-y: -12; }
 .confetti:nth-child(3) { --rand-x: -5; --rand-y: -7; }
@@ -86,4 +86,3 @@
 .confetti:nth-child(8) { --rand-x: 8; --rand-y: 13; }
 .confetti:nth-child(9) { --rand-x: -11; --rand-y: 15; }
 .confetti:nth-child(10) { --rand-x: 20; --rand-y: 12; }
-/* ...repeat or randomize up to 30 for all confetti pieces... */
