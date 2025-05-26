@@ -253,5 +253,14 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+  .fade-timetable {
+  transition: opacity 0.3s;
+}
+.fade-timetable.fade-in {
+  opacity: 1;
+}
+.fade-timetable.fade-out {
+  opacity: 0;
+}
   }
 }
