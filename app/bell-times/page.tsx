@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo } from "react"
+import { useEffect } from "react"
 import Link from "next/link"
 import { Card } from "@/components/ui/card"
 import { ChevronLeft, Clock } from "lucide-react"
@@ -12,15 +12,16 @@ import BellCountdown from "@/components/bell-countdown"
 import { formatDate } from "@/utils/time-utils"
 import { formatTimeTo12Hour } from "@/utils/bell-utils"
 
-const SCHEDULE_TYPES = ["Mon/Tues", "Wed/Thurs", "Fri"]
-const SPECIAL_PERIODS = ["Recess", "Lunch", "Lunch 1", "Lunch 2", "End of Day"]
-
 export default function BellTimesPage() {
   const { bellTimes } = useTimetable()
 
   useEffect(() => {
+    // Track bell-times usage
     trackSectionUsage("bell-times")
   }, [])
+
+  // New schedule types
+  const scheduleTypes = ["Mon/Tues", "Wed/Thurs", "Fri"]
 
   return (
     <PageTransition>
@@ -30,16 +31,17 @@ export default function BellTimesPage() {
             <ChevronLeft className="h-6 w-6" />
           </Link>
           <h1 className="text-2xl font-bold">Bells</h1>
-          <div className="w-6"></div>
+          <div className="w-6"></div> {/* Empty div for spacing */}
         </div>
 
+        {/* Bell Countdown Timer */}
         <div className="mb-6">
           <BellCountdown />
         </div>
 
         <Tabs defaultValue="Mon/Tues" className="mb-6">
           <TabsList className="grid grid-cols-3 mb-4 bg-gray-100 dark:bg-gray-800 p-1 rounded-full">
-            {SCHEDULE_TYPES.map((type) => (
+            {scheduleTypes.map((type) => (
               <TabsTrigger
                 key={type}
                 value={type}
@@ -50,7 +52,7 @@ export default function BellTimesPage() {
             ))}
           </TabsList>
 
-          {SCHEDULE_TYPES.map((type) => (
+          {scheduleTypes.map((type) => (
             <TabsContent key={type} value={type}>
               <Card className="rounded-[1.5rem] bg-white dark:bg-gray-900 shadow-md border border-gray-100 dark:border-gray-800 p-5">
                 <div className="flex items-center gap-3 mb-4">
@@ -68,7 +70,11 @@ export default function BellTimesPage() {
                     <div
                       key={index}
                       className={`rounded-xl p-3 transition-all duration-200 ease-in-out ${
-                        SPECIAL_PERIODS.includes(bell.period)
+                        bell.period === "Recess" ||
+                        bell.period === "Lunch" ||
+                        bell.period === "Lunch 1" ||
+                        bell.period === "Lunch 2" ||
+                        bell.period === "End of Day"
                           ? "bg-gray-50 dark:bg-gray-800/50"
                           : "bg-theme-secondary"
                       }`}

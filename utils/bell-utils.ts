@@ -1,14 +1,13 @@
 import type { BellTime } from "@/contexts/timetable-context"
 import { isWithinSchoolHours } from "./time-utils"
 
-// Format time to 12-hour format
-const formatTo12Hour = (date: Date): string => {
+// Format time to 12-hour format without AM/PM
+const formatTo12HourNoAmPm = (date: Date): string => {
   let hours = date.getHours()
   const minutes = date.getMinutes().toString().padStart(2, "0")
-  const ampm = hours >= 12 ? "PM" : "AM"
   hours = hours % 12
   hours = hours ? hours : 12 // the hour '0' should be '12'
-  return `${hours}:${minutes} ${ampm}`
+  return `${hours}:${minutes}`
 }
 
 // Parse time string (e.g., "9:00 - 10:05" or "3:10") to get Date object
@@ -47,7 +46,7 @@ export const parseBellTime = (timeString: string): { start: Date; end: Date | nu
   }
 }
 
-// Format time string to 12-hour format
+// Format time string to 12-hour format without AM/PM
 export const formatTimeTo12Hour = (timeString: string): string => {
   if (timeString.includes(" - ")) {
     const [startStr, endStr] = timeString.split(" - ")
@@ -64,7 +63,7 @@ export const formatTimeTo12Hour = (timeString: string): string => {
     const endDate = new Date()
     endDate.setHours(endHour, endMinute, 0, 0)
 
-    return `${formatTo12Hour(startDate)} - ${formatTo12Hour(endDate)}`
+    return `${formatTo12HourNoAmPm(startDate)} - ${formatTo12HourNoAmPm(endDate)}`
   } else {
     const timeParts = timeString.trim().split(":")
     const hour = Number.parseInt(timeParts[0], 10)
@@ -72,7 +71,7 @@ export const formatTimeTo12Hour = (timeString: string): string => {
     const date = new Date()
     date.setHours(hour, minute, 0, 0)
 
-    return formatTo12Hour(date)
+    return formatTo12HourNoAmPm(date)
   }
 }
 
