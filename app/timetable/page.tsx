@@ -17,7 +17,7 @@ export default function TimetablePage() {
   const { currentWeek, setCurrentWeek, selectedDay, setSelectedDay, timetableData, nextPeriodInfo } = useTimetable()
 
   // Animation state
-  const [fade, setFade] = useState(false)
+  const [slide, setSlide] = useState(false)
   const prevDayRef = useRef<string>(selectedDay)
 
   // Days of the week
@@ -45,13 +45,13 @@ export default function TimetablePage() {
     return () => clearInterval(interval)
   }, [])
 
-  // Fade animation when day changes
+  // Slide animation when day changes
   useEffect(() => {
     if (prevDayRef.current !== selectedDay) {
-      setFade(true)
+      setSlide(true)
       const timeout = setTimeout(() => {
-        setFade(false)
-      }, 300) // match with CSS duration
+        setSlide(false)
+      }, 700) // match with CSS duration
       prevDayRef.current = selectedDay
       return () => clearTimeout(timeout)
     }
@@ -180,7 +180,7 @@ export default function TimetablePage() {
               </TabsTrigger>
             ))}
           </TabsList>
-          <div className={`fade-timetable ${fade ? "fade-out" : "fade-in"}`}>
+          <div className={`slide-timetable ${slide ? "slide-out" : "slide-in"}`}>
             {days.map((day) => (
               <TabsContent key={day} value={day} className="transition-all duration-300 ease-in-out">
                 <Card className="rounded-[1.5rem] bg-white dark:bg-gray-900 shadow-md p-5 border border-gray-100 dark:border-gray-800 transition-all duration-300 ease-in-out">
